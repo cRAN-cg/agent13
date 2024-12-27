@@ -1,0 +1,50 @@
+{
+  "manifest_version": 3,
+  "name": "Agent13 Mini",
+  "version": "1.0.0",
+  "icons": {
+    "16": "assets/icon.svg",
+    "48": "assets/icon.svg",
+    "128": "assets/icon.svg"
+  },
+  "description": "A minimal Agent13-like interface for Claude",
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self'",
+    "sandbox": "sandbox allow-scripts allow-forms allow-popups allow-modals; script-src 'self' 'unsafe-inline' 'unsafe-eval'; worker-src blob: 'self'"
+  },
+  "permissions": [
+    "storage",
+    "activeTab",
+    "unlimitedStorage"
+  ],
+  "host_permissions": [
+    "https://api.anthropic.com/*"
+  ],
+  "action": {
+    "default_popup": "ui/settings.html"
+  },
+  "background": {
+    "service_worker": "background/service-worker.js",
+    "type": "module"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content/initialize.js"],
+      "css": ["ui/styles/theme.css"],
+      "run_at": "document_start"
+    }
+  ],
+    "web_accessible_resources": [
+        {
+            "resources": [
+                "modules/core.js",
+                "modules/ui.js",
+                "modules/api.js",
+                "modules/app.js",
+                "modules/selection.js"
+      ],
+      "matches": ["<all_urls>"]
+    }
+  ]
+}

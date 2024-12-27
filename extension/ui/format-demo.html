@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Markdown Formatting Demo</title>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+            line-height: 1.6;
+        }
+        .formatted-content {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .formatted-content h1 {
+            color: #2c3e50;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 0.5rem;
+        }
+        .formatted-content strong {
+            color: #2c3e50;
+        }
+        .formatted-content ol {
+            padding-left: 1.5rem;
+        }
+        .formatted-content li {
+            margin: 0.5rem 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="formatted-content" id="output"></div>
+
+    <script>
+        // Sample markdown text
+        const markdownText = `
+# Binary Tree Properties
+
+1. **Number of Nodes**: In a perfect binary tree with \`n\` levels, the total number of nodes is \`2^n - 1\`.
+
+2. **Internal Nodes vs. Leaf Nodes**: The number of internal nodes (non-leaf nodes) in a perfect binary tree is one less than the number of leaf nodes. If there are \`n\` levels, the number of leaf nodes is \`2^(n-1)\`, and the number of internal nodes is \`2^(n-1) - 1\`.
+
+3. **Total Nodes and Leaf Nodes**: The total number of nodes in a perfect binary tree is twice the number of leaf nodes minus one.
+
+4. **Time Complexity**: Perfect binary trees are often used to estimate the time complexity of algorithms that involve searching or traversing a complete binary tree, such as in combinatorial problems. The time complexity of such algorithms is typically O(2^n), where n is the height or depth of the tree.
+
+5. **Binary Search Tree (BST)**: A binary search tree is a special type of binary tree where the value of each node is greater than all the values in its left subtree and less than all the values in its right subtree. This property allows for efficient searching, insertion, and deletion operations.
+
+In summary, perfect binary trees have a specific structure and node distribution, which makes them useful for analyzing the time complexity of certain algorithms, especially those involving binary tree traversal or search operations. The properties mentioned above, such as the number of nodes at each level and the relationship between internal and leaf nodes, are fundamental to understanding and working with perfect binary trees.`;
+
+        // Convert markdown to HTML and insert into the page
+        document.getElementById('output').innerHTML = marked.parse(markdownText);
+    </script>
+</body>
+</html>

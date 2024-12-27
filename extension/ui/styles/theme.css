@@ -1,0 +1,380 @@
+:root {
+    /* Colors */
+    --bg-primary: #1a1a1a;
+    --bg-secondary: #242424;
+    --text-primary: #ffffff;
+    --text-secondary: #a0a0a0;
+    --accent: #1a90ff;
+    --border: #333333;
+    
+    /* Layout */
+    --panel-width: 450px;
+    --panel-width-collapsed: 48px;
+    --header-height: 48px;
+    --trigger-size: 24px;
+    
+    /* Typography */
+    --font-mono: ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, Liberation Mono, monospace;
+    --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    
+    /* Transitions */
+    --transition-fast: 150ms ease;
+    --transition-normal: 250ms ease;
+}
+
+/* Trigger */
+.agent13-trigger-wrapper {
+    position: absolute;
+    z-index: 2147483647;
+    pointer-events: none;
+    will-change: transform;
+    top: 0;
+    left: 0;
+}
+
+.agent13-trigger {
+    position: relative;
+    width: var(--trigger-size);
+    height: var(--trigger-size);
+    background: var(--accent);
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    transition: transform var(--transition-fast), opacity var(--transition-fast);
+    transform-origin: center;
+    pointer-events: auto;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.agent13-trigger::after {
+    content: "C";
+    color: white;
+    font-size: 13px;
+    font-weight: 600;
+    font-family: var(--font-mono);
+    transform: translateY(-1px);
+}
+
+.agent13-trigger:hover {
+    transform: scale(1.1);
+    opacity: 0.95;
+}
+
+.agent13-trigger:active {
+    transform: scale(0.95);
+}
+
+/* Panel */
+.agent13-panel {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: var(--panel-width);
+    height: 100vh;
+    background: var(--bg-primary);
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    z-index: 2147483647;
+    transform: translateX(-100%);
+    opacity: 0;
+    transition: transform var(--transition-normal), opacity var(--transition-normal), width var(--transition-normal);
+    font-family: var(--font-sans);
+    transition: width var(--transition-normal), transform var(--transition-normal);
+    will-change: width, transform;
+}
+
+/* Panel States */
+.agent13-panel-visible {
+    transform: translateX(0);
+    opacity: 1;
+}
+
+.agent13-panel-collapsed {
+    width: var(--panel-width-collapsed);
+}
+
+.agent13-panel-collapsed .agent13-panel-content,
+.agent13-panel-collapsed .agent13-input-container,
+.agent13-panel-collapsed .agent13-header-left span {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.agent13-panel-collapsed .agent13-header-right {
+    opacity: 1;
+}
+
+.agent13-panel-collapsed .agent13-header-btn:not(:last-child) {
+    display: none;
+}
+
+/* Panel Header */
+.agent13-panel-header {
+    height: var(--header-height);
+    padding: 0 16px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--bg-primary);
+}
+
+.agent13-header-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transition: opacity var(--transition-normal);
+}
+
+.agent13-header-left span {
+    color: var(--text-primary);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    font-family: var(--font-mono);
+}
+
+.agent13-header-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: opacity var(--transition-normal);
+}
+
+.agent13-header-btn {
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    padding: 6px;
+    cursor: pointer;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color var(--transition-fast), color var(--transition-fast);
+}
+
+.agent13-header-btn:hover {
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+}
+
+/* Panel Content */
+.agent13-panel-content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    transition: opacity var(--transition-normal);
+}
+
+.agent13-input-container {
+    padding: 16px;
+    border-top: 1px solid var(--border);
+    background: var(--bg-primary);
+    transition: opacity var(--transition-normal);
+}
+
+.agent13-input {
+    width: 100%;
+    min-height: 40px;
+    max-height: 200px;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 10px 12px;
+    color: var(--text-primary);
+    font-size: 14px;
+    line-height: 1.5;
+    resize: none;
+    outline: none;
+    font-family: inherit;
+    transition: border-color var(--transition-fast);
+}
+
+.agent13-input:focus {
+    border-color: var(--accent);
+}
+
+/* Settings Overlay */
+.agent13-settings-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2147483647;
+    opacity: 0;
+    transition: opacity var(--transition-normal);
+}
+
+.agent13-settings-overlay.visible {
+    opacity: 1;
+}
+
+.agent13-settings-container {
+    width: 400px;
+    background: var(--bg-primary);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    transform: translateY(20px);
+    opacity: 0;
+    transition: transform var(--transition-normal), opacity var(--transition-normal);
+}
+
+.agent13-settings-overlay.visible .agent13-settings-container {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+.agent13-settings-header {
+    padding: 16px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.agent13-settings-header span {
+    color: var(--text-primary);
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.agent13-settings-content {
+    padding: 16px;
+}
+
+.agent13-settings-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.agent13-settings-group label {
+    color: var(--text-secondary);
+    font-size: 12px;
+}
+
+.agent13-settings-group input {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 8px 12px;
+    color: var(--text-primary);
+    font-size: 13px;
+    outline: none;
+    transition: border-color var(--transition-fast);
+}
+
+.agent13-settings-group input:focus {
+    border-color: var(--accent);
+}
+
+.agent13-settings-save {
+    background: var(--accent);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 8px 16px;
+    font-size: 13px;
+    cursor: pointer;
+    margin-top: 8px;
+    transition: opacity var(--transition-fast);
+}
+
+.agent13-settings-save:hover {
+    opacity: 0.9;
+}
+
+/* Messages */
+.agent13-query,
+.agent13-response,
+.agent13-error,
+.agent13-loading {
+    font-family: var(--font-mono);
+    font-size: 14px;
+    line-height: 1.6;
+    padding: 12px 16px;
+    border-radius: 4px;
+    opacity: 0;
+    transform: translateY(10px);
+    animation: message-appear var(--transition-normal) forwards;
+}
+
+.agent13-query {
+    color: var(--text-secondary);
+    background: var(--bg-secondary);
+    margin-left: auto;
+    max-width: 85%;
+}
+
+.agent13-response {
+    color: var(--text-primary);
+    background: var(--bg-secondary);
+    white-space: pre-wrap;
+}
+
+.agent13-loading {
+    color: var(--text-secondary);
+    padding: 8px 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.agent13-loading::after {
+    content: "";
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    border: 2px solid var(--accent);
+    border-right-color: transparent;
+    animation: siri-spin 1s linear infinite;
+}
+
+@keyframes siri-spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.typing-animation {
+    display: inline-block;
+    opacity: 0;
+    animation: type-in 20ms forwards;
+    animation-delay: calc(var(--char-index) * 20ms);
+}
+
+@keyframes type-in {
+    to {
+        opacity: 1;
+    }
+}
+
+.agent13-error {
+    color: #ff4444;
+    background: rgba(255, 68, 68, 0.1);
+}
+
+@keyframes message-appear {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
