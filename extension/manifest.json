@@ -23,6 +23,10 @@
   "action": {
     "default_popup": "ui/settings.html"
   },
+  "options_ui": {
+    "page": "ui/settings.html",
+    "open_in_tab": true
+  },
   "background": {
     "service_worker": "background/service-worker.js",
     "type": "module"
@@ -31,7 +35,16 @@
     {
       "matches": ["<all_urls>"],
       "js": ["libs/marked.min.js"],
-      "css": ["ui/styles/theme.css"],
+      "css": [
+        "ui/styles/variables.css",
+        "ui/styles/theme.css",
+        "ui/styles/animations.css",
+        "ui/styles/components/trigger.css",
+        "ui/styles/components/panel.css",
+        "ui/styles/components/messages.css",
+        "ui/styles/components/input.css",
+        "ui/styles/components/settings.css"
+      ],
       "run_at": "document_start"
     },
     {
@@ -45,7 +58,9 @@
             "resources": [
                 "modules/*.js",
                 "libs/*.js",
-                "libs/marked.min.js"
+                "libs/marked.min.js",
+                "ui/styles/*.css",
+                "ui/styles/components/*.css"
             ],
             "matches": ["<all_urls>"]
         }
