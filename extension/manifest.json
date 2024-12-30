@@ -42,7 +42,8 @@
                 "modules/ui.js",
                 "modules/api.js",
                 "modules/app.js",
-                "modules/selection.js"
+                "modules/selection.js",
+                "libs/marked.min.js"
       ],
       "matches": ["<all_urls>"]
     }

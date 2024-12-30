@@ -74,6 +74,8 @@
     top: 0;
     left: 0;
     width: var(--panel-width);
+    min-width: var(--panel-width);
+    max-width: 80vw;
     height: 100vh;
     background: var(--bg-primary);
     border-right: 1px solid var(--border);
@@ -82,10 +84,27 @@
     z-index: 2147483647;
     transform: translateX(-100%);
     opacity: 0;
-    transition: transform var(--transition-normal), opacity var(--transition-normal), width var(--transition-normal);
+    transition: transform var(--transition-normal), opacity var(--transition-normal);
     font-family: var(--font-sans);
-    transition: width var(--transition-normal), transform var(--transition-normal);
     will-change: width, transform;
+    resize: horizontal;
+    overflow-x: hidden;
+}
+
+.agent13-panel::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 4px;
+    height: 100%;
+    cursor: ew-resize;
+    background: transparent;
+}
+
+.agent13-panel:hover::after {
+    background: var(--accent);
+    opacity: 0.2;
 }
 
 /* Panel States */
@@ -325,6 +344,75 @@
     color: var(--text-primary);
     background: var(--bg-secondary);
     white-space: pre-wrap;
+}
+
+.agent13-response pre {
+    background: var(--bg-primary);
+    padding: 12px;
+    border-radius: 4px;
+    overflow-x: auto;
+}
+
+.agent13-response code {
+    font-family: var(--font-mono);
+    font-size: 0.9em;
+}
+
+.agent13-response h1,
+.agent13-response h2,
+.agent13-response h3,
+.agent13-response h4,
+.agent13-response h5,
+.agent13-response h6 {
+    margin: 1.5em 0 0.5em;
+    color: var(--text-primary);
+}
+
+.agent13-response p {
+    margin: 0.8em 0;
+}
+
+.agent13-response ul,
+.agent13-response ol {
+    padding-left: 1.5em;
+    margin: 0.8em 0;
+}
+
+.agent13-response li {
+    margin: 0.3em 0;
+}
+
+.agent13-response a {
+    color: var(--accent);
+    text-decoration: none;
+}
+
+.agent13-response a:hover {
+    text-decoration: underline;
+}
+
+.agent13-response blockquote {
+    border-left: 3px solid var(--accent);
+    margin: 1em 0;
+    padding-left: 1em;
+    color: var(--text-secondary);
+}
+
+.agent13-response table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1em 0;
+}
+
+.agent13-response th,
+.agent13-response td {
+    border: 1px solid var(--border);
+    padding: 8px;
+    text-align: left;
+}
+
+.agent13-response th {
+    background: var(--bg-primary);
 }
 
 .agent13-loading {
