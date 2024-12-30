@@ -2,32 +2,6 @@ import { Core } from './core.js';
 
 let marked = null;
 
-const loadMarked = async () => {
-    if (marked) return marked;
-    
-    try {
-        const extensionUrl = chrome.runtime.getURL('');
-        const response = await fetch(extensionUrl + 'libs/marked.min.js');
-        const markedText = await response.text();
-        const markedModule = new Function(markedText + '; return marked;')();
-        
-        markedModule.setOptions({
-            breaks: true,
-            gfm: true,
-            headerIds: false
-        });
-        
-        marked = markedModule;
-        return marked;
-    } catch (error) {
-        console.error('[Agent13 UI] Failed to load marked:', error);
-        return null;
-    }
-};
-
-// Initialize marked when module loads
-loadMarked();
-
 class Panel {
     static STATES = {
         EXPANDED: 'expanded',
@@ -50,6 +24,30 @@ class Panel {
 
     getContentEl() {
         return this.#contentEl;
+    }
+
+    async #loadMarked() {
+        if (marked) return marked;
+        
+        return new Promise((resolve) => {
+            const script = document.createElement('script');
+            script.src = chrome.runtime.getURL('libs/marked.min.js');
+            script.onload = () => {
+                marked = window.marked;
+                marked.setOptions({
+                    breaks: true,
+                    gfm: true,
+                    headerIds: false,
+                    mangle: false
+                });
+                resolve(marked);
+            };
+            script.onerror = () => {
+                console.error('[Agent13 UI] Failed to load marked.js');
+                resolve(null);
+            };
+            document.head.appendChild(script);
+        });
     }
 
     create() {
@@ -115,6 +113,9 @@ class Panel {
         // Force a reflow before adding the visible class
         this.#panelEl.offsetHeight;
         this.#panelEl.classList.add('agent13-panel-visible');
+        
+        // Load marked.js
+        this.#loadMarked();
         
         console.log('[Agent13 UI] Panel created and visible');
     }
@@ -210,54 +211,18 @@ class Panel {
             messageEl.textContent = 'Agent13 is thinking...';
         } else if (type === 'response') {
             try {
-                const markedInstance = await loadMarked();
+                const markedInstance = await this.#loadMarked();
                 if (markedInstance) {
                     // Parse markdown and add typing animation
                     const formattedHtml = markedInstance.parse(text);
-                    
-                    // Create a temporary div to parse the HTML
-                    const tempDiv = document.createElement('div');
-                    tempDiv.innerHTML = formattedHtml;
-                    
-                    // Apply typing animation to text nodes
-                    const walkNodes = (node) => {
-                        if (node.nodeType === Node.TEXT_NODE && node.textContent.trim()) {
-                            const textContainer = document.createElement('span');
-                            node.textContent.split('').forEach((char, index) => {
-                                const span = document.createElement('span');
-                                span.className = 'typing-animation';
-                                span.style.setProperty('--char-index', index);
-                                span.textContent = char;
-                                textContainer.appendChild(span);
-                            });
-                            node.parentNode.replaceChild(textContainer, node);
-                        } else {
-                            Array.from(node.childNodes).forEach(walkNodes);
-                        }
-                    };
-                    
-                    walkNodes(tempDiv);
-                    messageEl.innerHTML = tempDiv.innerHTML;
+                    messageEl.innerHTML = formattedHtml;
                 } else {
                     // Fallback to plain text if marked isn't loaded
-                    text.split('').forEach((char, index) => {
-                        const span = document.createElement('span');
-                        span.className = 'typing-animation';
-                        span.style.setProperty('--char-index', index);
-                        span.textContent = char;
-                        messageEl.appendChild(span);
-                    });
+                    messageEl.textContent = text;
                 }
             } catch (error) {
                 console.error('[Agent13 UI] Failed to format markdown:', error);
-                // Fallback to plain text with typing animation
-                text.split('').forEach((char, index) => {
-                    const span = document.createElement('span');
-                    span.className = 'typing-animation';
-                    span.style.setProperty('--char-index', index);
-                    span.textContent = char;
-                    messageEl.appendChild(span);
-                });
+                messageEl.textContent = text;
             }
         } else {
             messageEl.textContent = text;
