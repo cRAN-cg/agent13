@@ -1,22 +1,32 @@
 import { Core } from './core.js';
 
-let marked;
+let marked = null;
 
-// Initialize marked when UI module loads
-(async () => {
+const loadMarked = async () => {
+    if (marked) return marked;
+    
     try {
         const extensionUrl = chrome.runtime.getURL('');
-        const markedModule = await import(extensionUrl + 'libs/marked.min.js');
-        marked = markedModule.marked;
-        marked.setOptions({
+        const response = await fetch(extensionUrl + 'libs/marked.min.js');
+        const markedText = await response.text();
+        const markedModule = new Function(markedText + '; return marked;')();
+        
+        markedModule.setOptions({
             breaks: true,
             gfm: true,
             headerIds: false
         });
+        
+        marked = markedModule;
+        return marked;
     } catch (error) {
         console.error('[Agent13 UI] Failed to load marked:', error);
+        return null;
     }
-})();
+};
+
+// Initialize marked when module loads
+loadMarked();
 
 class Panel {
     static STATES = {
@@ -186,7 +196,7 @@ class Panel {
         }
     }
 
-    addMessage({ type, text }) {
+    async addMessage({ type, text }) {
         if (!this.#contentEl) return;
 
         const messageEl = document.createElement('div');
@@ -199,33 +209,48 @@ class Panel {
             // Show loading animation
             messageEl.textContent = 'Agent13 is thinking...';
         } else if (type === 'response') {
-            if (marked) {
-                // Parse markdown and add typing animation
-                const formattedHtml = marked.parse(text);
-                const tempDiv = document.createElement('div');
-                tempDiv.innerHTML = formattedHtml;
-                
-                // Apply typing animation to text nodes
-                const walkNodes = (node) => {
-                    if (node.nodeType === Node.TEXT_NODE && node.textContent.trim()) {
-                        const textContainer = document.createElement('span');
-                        node.textContent.split('').forEach((char, index) => {
-                            const span = document.createElement('span');
-                            span.className = 'typing-animation';
-                            span.style.setProperty('--char-index', index);
-                            span.textContent = char;
-                            textContainer.appendChild(span);
-                        });
-                        node.parentNode.replaceChild(textContainer, node);
-                    } else {
-                        Array.from(node.childNodes).forEach(walkNodes);
-                    }
-                };
-                
-                walkNodes(tempDiv);
-                messageEl.innerHTML = tempDiv.innerHTML;
-            } else {
-                // Fallback to plain text if marked isn't loaded
+            try {
+                const markedInstance = await loadMarked();
+                if (markedInstance) {
+                    // Parse markdown and add typing animation
+                    const formattedHtml = markedInstance.parse(text);
+                    
+                    // Create a temporary div to parse the HTML
+                    const tempDiv = document.createElement('div');
+                    tempDiv.innerHTML = formattedHtml;
+                    
+                    // Apply typing animation to text nodes
+                    const walkNodes = (node) => {
+                        if (node.nodeType === Node.TEXT_NODE && node.textContent.trim()) {
+                            const textContainer = document.createElement('span');
+                            node.textContent.split('').forEach((char, index) => {
+                                const span = document.createElement('span');
+                                span.className = 'typing-animation';
+                                span.style.setProperty('--char-index', index);
+                                span.textContent = char;
+                                textContainer.appendChild(span);
+                            });
+                            node.parentNode.replaceChild(textContainer, node);
+                        } else {
+                            Array.from(node.childNodes).forEach(walkNodes);
+                        }
+                    };
+                    
+                    walkNodes(tempDiv);
+                    messageEl.innerHTML = tempDiv.innerHTML;
+                } else {
+                    // Fallback to plain text if marked isn't loaded
+                    text.split('').forEach((char, index) => {
+                        const span = document.createElement('span');
+                        span.className = 'typing-animation';
+                        span.style.setProperty('--char-index', index);
+                        span.textContent = char;
+                        messageEl.appendChild(span);
+                    });
+                }
+            } catch (error) {
+                console.error('[Agent13 UI] Failed to format markdown:', error);
+                // Fallback to plain text with typing animation
                 text.split('').forEach((char, index) => {
                     const span = document.createElement('span');
                     span.className = 'typing-animation';

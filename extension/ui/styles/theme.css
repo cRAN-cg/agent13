@@ -87,23 +87,37 @@
     transition: transform var(--transition-normal), opacity var(--transition-normal);
     font-family: var(--font-sans);
     will-change: width, transform;
+    overflow: visible !important;
 }
 
 .agent13-panel-resizer {
     position: absolute;
     top: 0;
-    right: -5px;
-    width: 10px;
+    right: -8px;
+    width: 16px;
     height: 100%;
     cursor: col-resize;
-    background: transparent;
     z-index: 2147483648;
+    background: transparent;
+    transition: background-color 0.2s;
 }
 
-.agent13-panel-resizer:hover,
-.agent13-panel-resizer.dragging {
+.agent13-panel-resizer::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 2px;
+    height: 100%;
+    background: var(--border);
+    transition: background-color 0.2s, width 0.2s;
+}
+
+.agent13-panel-resizer:hover::after,
+.agent13-panel-resizer.dragging::after {
     background: var(--accent);
-    opacity: 0.2;
+    width: 4px;
 }
 
 /* Panel States */
