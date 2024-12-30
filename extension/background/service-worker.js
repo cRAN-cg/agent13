@@ -121,7 +121,6 @@ function initializeManager() {
     if (!conversationManager) {
         try {
             conversationManager = new ConversationManager();
-            console.log('[Agent13] Conversation manager initialized');
         } catch (error) {
             console.error('[Agent13] Failed to initialize conversation manager:', error);
         }
