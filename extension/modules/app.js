@@ -17,7 +17,6 @@ class App {
             ]);
             return { Core, UI, API, SelectionHandler: SelectionModule.default };
         } catch (error) {
-            console.error('[Agent13] Module loading error:', error);
             throw error;
         }
     }
@@ -80,40 +79,59 @@ class App {
             }
         });
 
-        this.#core.events.on('trigger:click', (text) => {
-            // Show selected text immediately
-            this.#ui.Panel.addMessage({ type: 'query', text });
-            
-            // Show loading state
-            this.#ui.Panel.addMessage({ type: 'loading', text: '' });
-            
-            // Send message to API
-            this.#api.sendMessage(text, this.#core.state.get('currentConversationId'))
-                .then(response => {
-                    this.#core.state.set('currentConversationId', response.conversationId);
-                    
-                    // Remove loading message
-                    const loadingEl = this.#ui.Panel.getContentEl().querySelector('.agent13-loading');
-                    if (loadingEl) loadingEl.remove();
-                    
-                    // Show response with typing animation
-                    this.#ui.Panel.addMessage({ type: 'response', text: response.explanation });
-                })
-                .catch(error => {
-                    // Remove loading message if there's an error
-                    const loadingEl = this.#ui.Panel.getContentEl().querySelector('.agent13-loading');
-                    if (loadingEl) loadingEl.remove();
-                    
-                    this.#ui.Panel.addMessage({ type: 'error', text: error.message });
-                });
+        this.#core.events.on('trigger:click', async (text) => {
+            try {
+                // Create panel first to show feedback
+                const panelCreated = this.#ui.Panel.create();
+                if (!panelCreated) {
+                    throw new Error('Failed to create panel');
+                }
+
+                // Check API key
+                const apiKey = await this.#core.settings.getApiKey();
+                if (!apiKey) {
+                    await this.#ui.Panel.addMessage({ 
+                        type: 'error', 
+                        text: 'Please set your API key in the extension settings. Click the settings icon in the top right to configure.' 
+                    });
+                    return;
+                }
+                
+                // Add messages after panel is ready
+                
+                // Add messages after panel is ready
+                await this.#ui.Panel.addMessage({ type: 'query', text });
+                await this.#ui.Panel.addMessage({ type: 'loading', text: '' });
+                
+                // Send message to API
+                const response = await this.#api.sendMessage(text, this.#core.state.get('currentConversationId'));
+                this.#core.state.set('currentConversationId', response.conversationId);
+                
+                // Remove loading message
+                const loadingEl = this.#ui.Panel.getContentEl()?.querySelector('.agent13-loading');
+                if (loadingEl) loadingEl.remove();
+                
+                // Show response with typing animation
+                await this.#ui.Panel.addMessage({ type: 'response', text: response.explanation });
+            } catch (error) {
+                // Remove loading message if there's an error
+                const loadingEl = this.#ui.Panel.getContentEl()?.querySelector('.agent13-loading');
+                if (loadingEl) loadingEl.remove();
+                
+                console.error('[Agent13] Error in trigger:click handler:', error);
+                // Try to show error in panel
+                const panelCreated = this.#ui.Panel.create();
+                if (panelCreated) {
+                    await this.#ui.Panel.addMessage({ type: 'error', text: error.message });
+                }
+            }
         });
 
         this.#core.events.on('message:send', (text) => this.#handleMessage(text));
         
         this.#core.events.on('settings:open', () => {
-            const overlay = document.createElement('div');
-            overlay.className = 'agent13-settings-overlay';
-            // Settings UI implementation would go here
+            // Open settings in a new tab
+            chrome.runtime.openOptionsPage();
         });
 
         this.#core.events.on('state:change:isExpanded', () => this.#handlePanelState());
@@ -133,15 +151,14 @@ class App {
             // Attach UI instance to core for other modules to access
             this.#core.ui = this.#ui;
             
+            // Setup event handlers before initializing selection
+            this.#setupEventHandlers();
+            
             // Initialize selection handler with core that has UI access
             new SelectionHandler(this.#core);
 
-            this.#setupEventHandlers();
-
             this.#isInitialized = true;
-            console.log('[Agent13] Application initialized');
         } catch (error) {
-            console.error('[Agent13] Initialization error:', error);
             throw error;
         }
     }

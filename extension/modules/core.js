@@ -80,6 +80,10 @@ export class State {
 
 export class Events {
     #handlers = new Map();
+    #debugId = Math.random().toString(36).substr(2, 9);
+
+    constructor() {
+    }
 
     on(event, handler) {
         if (!this.#handlers.has(event)) {
@@ -94,10 +98,35 @@ export class Events {
         }
     }
 
-    emit(event, data) {
+    async emit(event, data) {
+        
         const handlers = this.#handlers.get(event);
-        if (handlers) {
-            handlers.forEach(handler => handler(data));
+        if (handlers && handlers.size > 0) {
+            
+            const promises = [];
+            for (const handler of handlers) {
+                promises.push((async () => {
+                    try {
+                        const result = handler(data);
+                        // If handler returns a promise, wait for it
+                        if (result && typeof result.then === 'function') {
+                            await result;
+                        }
+                    } catch (error) {
+                        console.error(`[Agent13] Error in event handler for ${event}:`, error);
+                        console.error(error.stack);
+                        throw error; // Re-throw to mark this handler as failed
+                    }
+                })());
+            }
+            
+            try {
+                await Promise.all(promises);
+            } catch (error) {
+                console.error(`[Agent13] Some handlers failed for ${event}`);
+                throw error; // Re-throw to indicate event emission failed
+            }
+        } else {
         }
     }
 }
