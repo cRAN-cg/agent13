@@ -1,0 +1,36 @@
+/* Input Container */
+.agent13-input-container {
+    padding: 16px;
+    border-top: 1px solid var(--border-primary);
+    background: var(--gradient-surface);
+    backdrop-filter: blur(8px);
+}
+
+/* Input Field */
+.agent13-input {
+    width: 100%;
+    min-height: 40px;
+    max-height: 200px;
+    background: var(--surface-2);
+    border: 1px solid var(--border-primary);
+    border-radius: 10px;
+    padding: 12px 16px;
+    color: var(--text-primary);
+    font-size: 14px;
+    line-height: 1.6;
+    resize: none;
+    outline: none;
+    font-family: inherit;
+    transition: all var(--transition-bounce);
+    box-shadow: var(--shadow-sm);
+    opacity: 0.9;
+}
+
+/* Input Focus State */
+.agent13-input:focus {
+    border-color: var(--accent);
+    box-shadow: var(--focus-ring);
+    background: var(--surface-3);
+    transform: translateY(-2px);
+    opacity: 1;
+}

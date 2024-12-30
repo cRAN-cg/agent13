@@ -1,0 +1,142 @@
+/* Messages Container */
+.agent13-messages-container {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    min-height: min-content;
+}
+
+/* Message Base Styles */
+.agent13-query,
+.agent13-response,
+.agent13-error,
+.agent13-loading {
+    font-family: var(--font-mono);
+    font-size: 14px;
+    line-height: 1.6;
+    padding: 14px 18px;
+    border-radius: 12px;
+    opacity: 0;
+    transform: translateY(10px);
+    animation: message-appear var(--transition-normal) forwards;
+    box-shadow: var(--shadow-sm);
+    transition: all var(--transition-bounce);
+    backdrop-filter: blur(4px);
+}
+
+/* Query Message */
+.agent13-query {
+    color: var(--text-secondary);
+    background: var(--gradient-surface);
+    margin-left: auto;
+    max-width: 85%;
+    border: 1px solid var(--border-primary);
+    opacity: 0.85;
+}
+
+/* Response Message */
+.agent13-response {
+    color: var(--text-primary);
+    background: var(--surface-2);
+    border: 1px solid var(--border-secondary);
+    opacity: 0.95;
+}
+
+/* Code Blocks in Response */
+.agent13-response pre {
+    position: relative;
+    padding-top: 2.5em;
+    background: hsl(var(--primary-hue), 15%, 12%);
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid var(--border-primary);
+    box-shadow: var(--shadow-sm);
+    margin: 16px 0;
+}
+
+.agent13-response pre::before {
+    content: attr(data-language);
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: hsl(var(--primary-hue), 18%, 15%);
+    padding: 8px 16px;
+    font-size: 0.85em;
+    color: hsl(var(--accent-hue), 70%, 75%);
+    border-bottom: 1px solid var(--border-primary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.agent13-response code {
+    font-family: var(--font-mono);
+    font-size: 0.9em;
+    color: var(--text-primary);
+    opacity: 0.95;
+    line-height: 1.6;
+}
+
+/* Code Container */
+.agent13-code-container {
+    margin: 16px 0;
+    border-radius: 10px;
+    overflow: hidden;
+    background: hsl(var(--primary-hue), 15%, 12%);
+    border: 1px solid var(--border-primary);
+    box-shadow: var(--shadow-sm);
+    padding: 2.5em 16px 16px;
+}
+
+.agent13-code-block {
+    font-family: var(--font-mono);
+    line-height: 1.5;
+    overflow-x: auto;
+    white-space: pre;
+    tab-size: 2;
+    color: var(--text-primary);
+}
+
+.line-number {
+    color: hsl(var(--primary-hue), 15%, 45%);
+    opacity: 0.7;
+}
+
+/* Loading Message */
+.agent13-loading {
+    color: var(--text-secondary);
+    background: var(--gradient-surface);
+    padding: 12px 18px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border: 1px solid var(--border-primary);
+    opacity: 0.8;
+}
+
+.agent13-loading::after {
+    content: "";
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    border: 2px solid var(--accent);
+    border-right-color: transparent;
+    animation: siri-spin 1.2s linear infinite;
+    opacity: 0.9;
+}
+
+/* Error Message */
+.agent13-error {
+    color: var(--error);
+    background: var(--error-muted);
+    border: 1px solid var(--error);
+    opacity: 0.9;
+}
+
+/* Typing Animation */
+.typing-animation {
+    display: inline-block;
+    opacity: 0;
+    animation: type-in 20ms forwards;
+    animation-delay: calc(var(--char-index) * 20ms);
+}
