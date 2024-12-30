@@ -18,7 +18,6 @@ class IconGenerator {
         
         const buffer = canvas.toBuffer('image/png');
         await fs.writeFile(`icon${size}.png`, buffer);
-        console.log(`Generated icon${size}.png`);
     }
 
     async generate() {
@@ -31,7 +30,6 @@ class IconGenerator {
                 )
             );
 
-            console.log('All icons generated successfully');
         } catch (error) {
             console.error('Error generating icons:', error);
             process.exit(1);
