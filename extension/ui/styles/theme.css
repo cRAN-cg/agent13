@@ -235,6 +235,104 @@
     border-color: var(--accent);
 }
 
+/* Extension Settings Page */
+body.settings-page {
+    width: 300px;
+    margin: 0;
+    padding: 16px;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    font-family: var(--font-sans);
+}
+
+.settings-container {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.settings-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+}
+
+.settings-header h1 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--text-primary);
+}
+
+.settings-header #version {
+    color: var(--text-secondary);
+    font-size: 12px;
+}
+
+.settings-input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.settings-input-group label {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.settings-input-group input {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 8px;
+    color: var(--text-primary);
+    font-size: 13px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.settings-input-group input:focus {
+    outline: none;
+    border-color: var(--accent);
+}
+
+.settings-save-button {
+    background: var(--accent);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 8px 16px;
+    cursor: pointer;
+    font-size: 13px;
+    transition: background-color 0.2s;
+    margin-top: 8px;
+}
+
+.settings-save-button:hover {
+    background: #0056b3;
+}
+
+.settings-status {
+    font-size: 12px;
+    margin-top: 8px;
+    padding: 8px;
+    border-radius: 4px;
+}
+
+.settings-status.success {
+    color: #28a745;
+    background: rgba(40, 167, 69, 0.1);
+}
+
+.settings-status.error {
+    color: #dc3545;
+    background: rgba(220, 53, 69, 0.1);
+    white-space: pre-wrap;
+    font-family: var(--font-mono);
+}
+
 /* Settings Overlay */
 .agent13-settings-overlay {
     position: fixed;

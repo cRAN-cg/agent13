@@ -72,12 +72,12 @@ class SettingsManager {
 
     showStatus = (message, type) => {
         this.#statusDiv.textContent = message;
-        this.#statusDiv.className = `status ${type}`;
+        this.#statusDiv.className = `settings-status ${type}`;
         
         if (type === 'success') {
             setTimeout(() => {
                 this.#statusDiv.textContent = '';
-                this.#statusDiv.className = 'status';
+                this.#statusDiv.className = 'settings-status';
             }, 2000);
         }
     }

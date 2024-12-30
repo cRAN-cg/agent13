@@ -8,10 +8,10 @@
     "128": "assets/icon.svg"
   },
   "description": "A minimal Agent13-like interface for Claude",
-  "content_security_policy": {
-    "extension_pages": "script-src 'self' 'unsafe-inline'; object-src 'self'",
-    "sandbox": "sandbox allow-scripts allow-forms allow-popups allow-modals; script-src 'self' 'unsafe-inline'; worker-src blob: 'self'"
-  },
+    "content_security_policy": {
+        "extension_pages": "default-src 'self' https://api.anthropic.com; connect-src 'self' https://api.anthropic.com; script-src 'self'; object-src 'none'",
+        "sandbox": "sandbox allow-scripts allow-forms allow-popups allow-modals; script-src 'self'"
+    },
   "permissions": [
     "storage",
     "activeTab",
@@ -30,16 +30,22 @@
   "content_scripts": [
     {
       "matches": ["<all_urls>"],
-      "js": ["content/initialize.js"],
+      "js": ["libs/marked.min.js"],
       "css": ["ui/styles/theme.css"],
       "run_at": "document_start"
+    },
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content/initialize.js"],
+      "type": "module"
     }
   ],
     "web_accessible_resources": [
         {
             "resources": [
                 "modules/*.js",
-                "libs/*.js"
+                "libs/*.js",
+                "libs/marked.min.js"
             ],
             "matches": ["<all_urls>"]
         }

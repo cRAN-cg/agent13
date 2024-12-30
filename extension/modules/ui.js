@@ -29,25 +29,20 @@ class Panel {
     async #loadMarked() {
         if (marked) return marked;
         
-        return new Promise((resolve) => {
-            const script = document.createElement('script');
-            script.src = chrome.runtime.getURL('libs/marked.min.js');
-            script.onload = () => {
-                marked = window.marked;
-                marked.setOptions({
-                    breaks: true,
-                    gfm: true,
-                    headerIds: false,
-                    mangle: false
-                });
-                resolve(marked);
-            };
-            script.onerror = () => {
-                console.error('[Agent13 UI] Failed to load marked.js');
-                resolve(null);
-            };
-            document.head.appendChild(script);
-        });
+        // marked.min.js is already loaded via content_scripts
+        marked = window.marked;
+        if (marked) {
+            marked.setOptions({
+                breaks: true,
+                gfm: true,
+                headerIds: false,
+                mangle: false
+            });
+            return marked;
+        }
+        
+        console.error('[Agent13 UI] marked.js not found in global scope');
+        return null;
     }
 
     create() {
@@ -268,7 +263,6 @@ class Trigger {
         triggerBtn.onclick = async (e) => {
             e.preventDefault();
             e.stopPropagation();
-            this.destroy();
             
             // Create panel first
             this.#core.ui.Panel.create();
@@ -277,6 +271,9 @@ class Trigger {
             
             // Then emit the trigger click event
             this.#core.events.emit('trigger:click', text);
+            
+            // Destroy the trigger after handling the click
+            this.destroy();
         };
         
         wrapper.appendChild(triggerBtn);
