@@ -13,16 +13,16 @@
     flex-direction: column;
     z-index: 2147483647 !important;
     font-family: var(--font-sans);
-    will-change: transform, opacity, visibility;
+    will-change: transform;
     box-shadow: var(--shadow-lg);
     backdrop-filter: blur(12px);
     overflow: hidden;
     user-select: none;
-    transform: translateZ(0); /* Create stacking context */
+    transform: translate3d(0, 0, 0);
     opacity: 1;
-    transition: transform var(--transition-bounce),
-                opacity var(--transition-normal),
-                visibility var(--transition-normal);
+    transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1),
+                opacity 0.3s cubic-bezier(0.4, 0.0, 0.2, 1),
+                visibility 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
 }
 
 /* Panel States */
@@ -49,30 +49,59 @@
     height: var(--collapsed-icon-size);
     min-width: var(--collapsed-icon-size);
     background: var(--gradient-primary);
-    border-radius: 8px;
+    border-radius: 50%;
     position: fixed;
-    cursor: move;
-    box-shadow: var(--shadow-lg);
-    backdrop-filter: blur(8px);
-    overflow: visible;
-    border: none;
+    bottom: 20px;
+    right: 20px;
+    cursor: grab;
+    box-shadow: var(--shadow-md);
+    border: 2px solid hsla(var(--primary-hue), 12%, 95%, 0.2);
+    will-change: transform;
+    overflow: hidden;
     user-select: none;
-    transform: translate(16px, 16px);
     opacity: 0.9;
-    transition: 
-        width var(--transition-bounce),
-        height var(--transition-bounce),
-        min-width var(--transition-bounce),
-        transform var(--transition-bounce),
-        opacity var(--transition-normal),
-        border-radius var(--transition-bounce);
+    transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
     z-index: 2147483647 !important;
 }
 
 .agent13-panel-collapsed:hover {
     opacity: 1;
-    transform: translate(16px, 16px) scale(1.05);
-    box-shadow: var(--shadow-lg);
+    transform: scale(1.05);
+    border-color: rgba(255, 255, 255, 0.4);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+}
+
+/* Add motion blur effect during transitions */
+.agent13-panel-collapsed.transitioning {
+    filter: blur(0.5px);
+}
+
+/* Improve shadow transitions */
+.agent13-panel-collapsed {
+    transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1),
+                opacity 0.3s cubic-bezier(0.4, 0.0, 0.2, 1),
+                box-shadow 0.3s cubic-bezier(0.4, 0.0, 0.2, 1),
+                border-color 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+}
+
+.agent13-panel-collapsed .agent13-panel-content,
+.agent13-panel-collapsed .agent13-panel-header,
+.agent13-panel-collapsed .agent13-panel-resizer,
+.agent13-panel-collapsed input {
+    display: none;
+}
+
+.agent13-panel-collapsed::after {
+    content: "13";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: calc(var(--collapsed-icon-size) * 0.5);
+    font-weight: 700;
+    font-family: var(--font-mono);
+    text-shadow: 0 2px 4px hsla(var(--primary-hue), 30%, 8%, 0.2);
 }
 
 /* Panel Content */

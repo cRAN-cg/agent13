@@ -1,6 +1,7 @@
 import { Header } from './Header.js';
 import { Messages } from './Messages.js';
 import { Input } from './Input.js';
+import { MinimizedPanel } from './MinimizedPanel.js';
 
 export class Panel {
     static STATES = {
@@ -13,7 +14,7 @@ export class Panel {
     #contentEl = null;
     #state = Panel.STATES.HIDDEN;
     #core = null;
-    #dragHandlers = null;
+    #minimizedPanel = null;
 
     // Component instances
     #header = null;
@@ -41,10 +42,8 @@ export class Panel {
 
     create() {
         try {
-            
             // If panel already exists, just make it visible
             if (this.#panelEl) {
-                
                 try {
                     // Ensure panel is visible and expanded
                     this.#panelEl.style.visibility = 'visible';
@@ -69,32 +68,31 @@ export class Panel {
                 }
             }
 
-
-        this.#panelEl = document.createElement('div');
-        this.#panelEl.className = 'agent13-panel agent13-panel-initializing';
-        this.#panelEl.style.zIndex = '2147483647';
-        
-        // Set initial styles
-        this.#panelEl.style.visibility = 'hidden';
-        this.#panelEl.style.opacity = '0';
-        this.#panelEl.style.pointerEvents = 'none';
-        
-        // Create and add components
-        const headerEl = this.#header.create('expanded');
-        this.#contentEl = document.createElement('div');
-        this.#contentEl.className = 'agent13-panel-content';
-        
-        const messagesEl = this.#messages.create();
-        this.#contentEl.appendChild(messagesEl);
-        
-        const inputEl = this.#input.create();
-        const resizer = this.#createResizer();
-        
-        this.#panelEl.appendChild(headerEl);
-        this.#panelEl.appendChild(this.#contentEl);
-        this.#panelEl.appendChild(inputEl);
-        this.#panelEl.appendChild(resizer);
-        
+            this.#panelEl = document.createElement('div');
+            this.#panelEl.className = 'agent13-panel agent13-panel-initializing';
+            this.#panelEl.style.zIndex = '2147483647';
+            
+            // Set initial styles
+            this.#panelEl.style.visibility = 'hidden';
+            this.#panelEl.style.opacity = '0';
+            this.#panelEl.style.pointerEvents = 'none';
+            
+            // Create and add components
+            const headerEl = this.#header.create('expanded');
+            this.#contentEl = document.createElement('div');
+            this.#contentEl.className = 'agent13-panel-content';
+            
+            const messagesEl = this.#messages.create();
+            this.#contentEl.appendChild(messagesEl);
+            
+            const inputEl = this.#input.create();
+            const resizer = this.#createResizer();
+            
+            this.#panelEl.appendChild(headerEl);
+            this.#panelEl.appendChild(this.#contentEl);
+            this.#panelEl.appendChild(inputEl);
+            this.#panelEl.appendChild(resizer);
+            
             try {
                 // First append to DOM
                 document.body.appendChild(this.#panelEl);
@@ -131,7 +129,6 @@ export class Panel {
                 return true;
             } catch (error) {
                 console.error('[Agent13] Failed to create panel:', error);
-                console.error(error.stack);
                 if (this.#panelEl && this.#panelEl.parentNode) {
                     this.#panelEl.remove();
                 }
@@ -140,7 +137,6 @@ export class Panel {
             }
         } catch (error) {
             console.error('[Agent13] Critical error in panel creation:', error);
-            console.error(error.stack);
             return false;
         }
     }
@@ -184,101 +180,37 @@ export class Panel {
         return resizer;
     }
 
-    #setupDragHandlers() {
-        let isDragging = false;
-        let currentX;
-        let currentY;
-        let initialX;
-        let initialY;
-        
-        const dragStart = (e) => {
-            e.preventDefault();
-            initialX = e.clientX - currentX;
-            initialY = e.clientY - currentY;
-            isDragging = true;
-        };
-        
-        const drag = (e) => {
-            if (isDragging) {
-                e.preventDefault();
-                currentX = e.clientX - initialX;
-                currentY = e.clientY - initialY;
-                
-                // Keep within viewport bounds
-                const bounds = this.#panelEl.getBoundingClientRect();
-                const maxX = window.innerWidth - bounds.width;
-                const maxY = window.innerHeight - bounds.height;
-                
-                currentX = Math.min(Math.max(0, currentX), maxX);
-                currentY = Math.min(Math.max(0, currentY), maxY);
-                
-                this.#panelEl.style.transform = `translate(${currentX}px, ${currentY}px)`;
-            }
-        };
-        
-        const dragEnd = () => {
-            initialX = currentX;
-            initialY = currentY;
-            isDragging = false;
-        };
-
-        // Get current position
-        const rect = this.#panelEl.getBoundingClientRect();
-        currentX = rect.left;
-        currentY = rect.top;
-
-        return { dragStart, drag, dragEnd };
-    }
-
     toggle() {
         if (!this.#panelEl) return;
 
         if (this.#state === Panel.STATES.EXPANDED) {
-            // First remove visible class to trigger transition
-            this.#panelEl.classList.remove('agent13-panel-visible');
-            this.#panelEl.style.visibility = 'hidden';
-            this.#panelEl.style.opacity = '0';
-            
-            // Wait for transition before adding collapsed state
-            setTimeout(() => {
-                if (!this.#panelEl) return;
-                
-                this.#panelEl.classList.add('agent13-panel-collapsed');
-                this.#header.updateCollapseButton(false);
-                this.#state = Panel.STATES.COLLAPSED;
-                
-                // Make visible again in collapsed state
-                this.#panelEl.style.visibility = 'visible';
-                this.#panelEl.style.opacity = '1';
-            }, 400); // Match transition-bounce duration
-            
-            // Setup drag handlers
-            if (!this.#dragHandlers) {
-                this.#dragHandlers = this.#setupDragHandlers();
+            // Clean up any existing minimized panel
+            if (this.#minimizedPanel) {
+                this.#minimizedPanel.destroy();
             }
             
-            // Add mouse event listeners
-            this.#panelEl.addEventListener('mousedown', this.#dragHandlers.dragStart, false);
-            document.addEventListener('mousemove', this.#dragHandlers.drag, false);
-            document.addEventListener('mouseup', this.#dragHandlers.dragEnd, false);
+            // Create new minimized panel instance
+            this.#minimizedPanel = new MinimizedPanel(this.#core, this.#panelEl);
+            
+            // Update state and UI
+            this.#panelEl.classList.remove('agent13-panel-visible');
+            this.#header.updateCollapseButton(false);
+            this.#state = Panel.STATES.COLLAPSED;
+            
+            // Trigger minimize with smooth transition
+            this.#minimizedPanel.minimize();
             
         } else {
-            this.#panelEl.classList.remove('agent13-panel-collapsed');
-            this.#header.updateCollapseButton(true);
-            this.#state = Panel.STATES.EXPANDED;
-            
-            // Remove drag event listeners
-            if (this.#dragHandlers) {
-                this.#panelEl.removeEventListener('mousedown', this.#dragHandlers.dragStart, false);
-                document.removeEventListener('mousemove', this.#dragHandlers.drag, false);
-                document.removeEventListener('mouseup', this.#dragHandlers.dragEnd, false);
+            if (this.#minimizedPanel) {
+                // Trigger maximize with smooth transition
+                this.#minimizedPanel.maximize();
+                this.#minimizedPanel.destroy();
+                this.#minimizedPanel = null;
             }
             
-            // Reset transform and ensure visibility
-            this.#panelEl.style.transform = '';
-            this.#panelEl.style.visibility = 'visible';
-            this.#panelEl.style.opacity = '1';
-            this.#panelEl.style.pointerEvents = 'all';
+            // Update state and UI
+            this.#header.updateCollapseButton(true);
+            this.#state = Panel.STATES.EXPANDED;
         }
     }
 
@@ -294,8 +226,12 @@ export class Panel {
         this.#messages.destroy();
         this.#input.destroy();
         
+        if (this.#minimizedPanel) {
+            this.#minimizedPanel.destroy();
+            this.#minimizedPanel = null;
+        }
+        
         if (this.#panelEl) {
-            
             // Update state before removing panel
             this.#core.state.set('isExpanded', false);
             
@@ -311,7 +247,6 @@ export class Panel {
                 this.#panelEl = null;
                 this.#contentEl = null;
                 this.#state = Panel.STATES.HIDDEN;
-                this.#dragHandlers = null;
                 
                 // Emit panel:destroyed event
                 this.#core.events.emit('panel:destroyed');
