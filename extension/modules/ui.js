@@ -58,9 +58,46 @@ class Panel {
         this.#contentEl.className = 'agent13-panel-content';
         const input = this.#createInput();
         
+        // Add resizer element
+        const resizer = document.createElement('div');
+        resizer.className = 'agent13-panel-resizer';
+        
+        // Handle resize functionality
+        let isResizing = false;
+        let startWidth;
+        let startX;
+        
+        resizer.addEventListener('mousedown', (e) => {
+            isResizing = true;
+            startWidth = this.#panelEl.offsetWidth;
+            startX = e.clientX;
+            resizer.classList.add('dragging');
+            
+            const onMouseMove = (e) => {
+                if (!isResizing) return;
+                
+                const newWidth = startWidth + (e.clientX - startX);
+                const minWidth = parseInt(getComputedStyle(this.#panelEl).minWidth);
+                const maxWidth = window.innerWidth * 0.8;
+                
+                this.#panelEl.style.width = Math.min(Math.max(newWidth, minWidth), maxWidth) + 'px';
+            };
+            
+            const onMouseUp = () => {
+                isResizing = false;
+                resizer.classList.remove('dragging');
+                document.removeEventListener('mousemove', onMouseMove);
+                document.removeEventListener('mouseup', onMouseUp);
+            };
+            
+            document.addEventListener('mousemove', onMouseMove);
+            document.addEventListener('mouseup', onMouseUp);
+        });
+        
         this.#panelEl.appendChild(header);
         this.#panelEl.appendChild(this.#contentEl);
         this.#panelEl.appendChild(input);
+        this.#panelEl.appendChild(resizer);
         
         document.body.appendChild(this.#panelEl);
         this.#state = Panel.STATES.EXPANDED;

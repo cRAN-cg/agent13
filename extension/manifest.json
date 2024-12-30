@@ -38,14 +38,10 @@
     "web_accessible_resources": [
         {
             "resources": [
-                "modules/core.js",
-                "modules/ui.js",
-                "modules/api.js",
-                "modules/app.js",
-                "modules/selection.js",
-                "libs/marked.min.js"
-      ],
-      "matches": ["<all_urls>"]
-    }
-  ]
+                "modules/*.js",
+                "libs/*.js"
+            ],
+            "matches": ["<all_urls>"]
+        }
+    ]
 }

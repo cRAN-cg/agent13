@@ -87,22 +87,21 @@
     transition: transform var(--transition-normal), opacity var(--transition-normal);
     font-family: var(--font-sans);
     will-change: width, transform;
-    resize: horizontal;
-    overflow-x: hidden;
 }
 
-.agent13-panel::after {
-    content: '';
+.agent13-panel-resizer {
     position: absolute;
     top: 0;
-    right: 0;
-    width: 4px;
+    right: -5px;
+    width: 10px;
     height: 100%;
-    cursor: ew-resize;
+    cursor: col-resize;
     background: transparent;
+    z-index: 2147483648;
 }
 
-.agent13-panel:hover::after {
+.agent13-panel-resizer:hover,
+.agent13-panel-resizer.dragging {
     background: var(--accent);
     opacity: 0.2;
 }
