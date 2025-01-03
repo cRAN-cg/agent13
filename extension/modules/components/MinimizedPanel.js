@@ -24,27 +24,6 @@ export class MinimizedPanel {
       this.#iconEl = document.createElement("div");
       this.#iconEl.className = "agent13-panel-icon";
   
-      // Style the icon
-      Object.assign(this.#iconEl.style, {
-        position: "fixed",
-        width: "var(--collapsed-icon-size)",
-        height: "var(--collapsed-icon-size)",
-        left: `${this.#currentPosition.x}px`,
-        top: `${this.#currentPosition.y}px`,
-        background: "var(--gradient-primary)",
-        borderRadius: "50%",
-        cursor: "grab",
-        boxShadow:
-          "var(--shadow-md), 0 0 20px hsla(var(--accent-hue), 70%, 50%, 0.2)",
-        border: "2px solid hsla(var(--accent-hue), 70%, 95%, 0.25)",
-        willChange: "transform",
-        overflow: "hidden",
-        userSelect: "none",
-        opacity: "0.9",
-        transition: "all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1)",
-        zIndex: "2147483647",
-      });
-  
       // Add the "13" text
       const textEl = document.createElement("div");
       Object.assign(textEl.style, {
