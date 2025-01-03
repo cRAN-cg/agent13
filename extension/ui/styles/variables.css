@@ -1,54 +1,54 @@
 :root {
-    /* Core Colors */
-    --primary-hue: 210;        /* Deep blue base */
-    --accent-hue: 200;         /* Ocean blue accent */
-    --success-hue: 140;        /* Forest greens */
-    --warning-hue: 35;         /* Warm orange */
-    --error-hue: 355;          /* Soft red */
+    /* Core Colors - Inspired by Studio Ghibli */
+    --primary-hue: 195;        /* Howl's castle blue */
+    --accent-hue: 160;         /* Forest spirit green */
+    --success-hue: 140;        /* Totoro's forest */
+    --warning-hue: 45;         /* Calcifer's warm glow */
+    --error-hue: 355;          /* Gentle warning red */
     
-    /* Dark Theme Palette */
-    --bg-primary: hsl(var(--primary-hue), 22%, 10%);      /* Night sky depth */
-    --bg-secondary: hsl(var(--primary-hue), 20%, 13%);    /* Moonlit clouds */
-    --bg-tertiary: hsl(var(--primary-hue), 18%, 16%);     /* Dawn's first light */
+    /* Dark Theme Palette - Ghibli Night Scenes */
+    --bg-primary: hsl(var(--primary-hue), 15%, 12%);      /* Moonlit night */
+    --bg-secondary: hsl(var(--primary-hue), 12%, 15%);    /* Twilight sky */
+    --bg-tertiary: hsl(var(--primary-hue), 10%, 18%);     /* Dawn mist */
     
-    /* Surface Colors - Like layers in a painted scene */
-    --surface-1: hsl(var(--primary-hue), 21%, 12%);       /* Distant mountains */
-    --surface-2: hsl(var(--primary-hue), 19%, 15%);       /* Middle ground trees */
-    --surface-3: hsl(var(--primary-hue), 17%, 18%);       /* Foreground details */
+    /* Surface Colors - Layered like Ghibli backgrounds */
+    --surface-1: hsl(var(--primary-hue), 14%, 14%);       /* Distant mountains */
+    --surface-2: hsl(var(--primary-hue), 12%, 17%);       /* Middle ground hills */
+    --surface-3: hsl(var(--primary-hue), 10%, 20%);       /* Foreground trees */
     
-    /* Text Colors - Like ink paintings */
-    --text-primary: hsl(var(--primary-hue), 12%, 95%);    /* Morning mist */
-    --text-secondary: hsl(var(--primary-hue), 10%, 75%);  /* Soft shadows */
-    --text-tertiary: hsl(var(--primary-hue), 8%, 60%);    /* Distant fog */
+    /* Text Colors - Like ink wash paintings */
+    --text-primary: hsl(var(--primary-hue), 10%, 98%);    /* Morning light */
+    --text-secondary: hsl(var(--primary-hue), 8%, 80%);   /* Soft clouds */
+    --text-tertiary: hsl(var(--primary-hue), 6%, 65%);    /* Distant fog */
     
-    /* Accent Colors */
-    --accent: hsl(var(--accent-hue), 70%, 50%);          /* Vibrant blue */
-    --accent-hover: hsl(var(--accent-hue), 75%, 55%);    /* Lighter blue */
-    --accent-active: hsl(var(--accent-hue), 80%, 45%);   /* Darker blue */
-    --accent-muted: hsla(var(--accent-hue), 70%, 50%, 0.12); /* Transparent blue */
+    /* Accent Colors - Inspired by Ghibli's magical moments */
+    --accent: hsl(var(--accent-hue), 65%, 45%);          /* Forest spirit glow */
+    --accent-hover: hsl(var(--accent-hue), 70%, 50%);    /* Magical forest light */
+    --accent-active: hsl(var(--accent-hue), 75%, 40%);   /* Deep forest shade */
+    --accent-muted: hsla(var(--accent-hue), 65%, 45%, 0.15); /* Mystical mist */
     
-    /* Semantic Colors - Like story emotions */
-    --success: hsl(var(--success-hue), 60%, 45%);        /* Totoro's forest */
-    --success-muted: hsla(var(--success-hue), 60%, 45%, 0.12);
-    --warning: hsl(var(--warning-hue), 80%, 65%);        /* Calcifer's glow */
-    --warning-muted: hsla(var(--warning-hue), 80%, 65%, 0.12);
-    --error: hsl(var(--error-hue), 70%, 67%);           /* Soft warnings */
-    --error-muted: hsla(var(--error-hue), 70%, 67%, 0.12);
+    /* Semantic Colors - From Ghibli's storytelling */
+    --success: hsl(var(--success-hue), 55%, 45%);        /* Healing forest */
+    --success-muted: hsla(var(--success-hue), 55%, 45%, 0.15);
+    --warning: hsl(var(--warning-hue), 75%, 60%);        /* Warm hearth fire */
+    --warning-muted: hsla(var(--warning-hue), 75%, 60%, 0.15);
+    --error: hsl(var(--error-hue), 65%, 65%);           /* Gentle warning */
+    --error-muted: hsla(var(--error-hue), 65%, 65%, 0.15);
     
-    /* Border Colors - Like brush strokes */
-    --border-primary: hsl(var(--primary-hue), 18%, 18%);
-    --border-secondary: hsl(var(--primary-hue), 16%, 23%);
+    /* Border Colors - Like painted edges */
+    --border-primary: hsl(var(--primary-hue), 12%, 20%);
+    --border-secondary: hsl(var(--primary-hue), 10%, 25%);
     
-    /* Shadow Colors - Like painted shadows */
-    --shadow-sm: 0 2px 4px hsla(var(--primary-hue), 30%, 8%, 0.12);
-    --shadow-md: 0 4px 8px hsla(var(--primary-hue), 30%, 8%, 0.14);
-    --shadow-lg: 0 8px 16px hsla(var(--primary-hue), 30%, 8%, 0.16);
+    /* Shadow Colors - Soft like hand-painted shadows */
+    --shadow-sm: 0 2px 4px hsla(var(--primary-hue), 20%, 8%, 0.15);
+    --shadow-md: 0 4px 8px hsla(var(--primary-hue), 20%, 8%, 0.18);
+    --shadow-lg: 0 8px 16px hsla(var(--primary-hue), 20%, 8%, 0.20);
     
-    /* Gradients */
+    /* Gradients - Like watercolor washes */
     --gradient-primary: linear-gradient(
         135deg,
-        hsl(var(--accent-hue), 70%, 50%),
-        hsl(calc(var(--accent-hue) + 15), 65%, 45%)
+        hsl(var(--accent-hue), 65%, 45%),
+        hsl(calc(var(--accent-hue) + 20), 60%, 40%)
     );
     --gradient-surface: linear-gradient(
         180deg,
@@ -57,8 +57,8 @@
     );
     --gradient-hover: linear-gradient(
         135deg,
-        hsl(var(--accent-hue), 75%, 55%),
-        hsl(calc(var(--accent-hue) + 15), 70%, 50%)
+        hsl(var(--accent-hue), 70%, 50%),
+        hsl(calc(var(--accent-hue) + 20), 65%, 45%)
     );
     
     /* Layout */
@@ -69,17 +69,53 @@
     --icon-size: 24px;
     --collapsed-icon-size: 32px;
     
-    /* Typography */
-    --font-mono: ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, Liberation Mono, monospace;
-    --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    /* Typography - Mixing VSCode native with custom */
+    --font-mono: var(--vscode-editor-font-family, ui-monospace, 'SF Mono', Menlo, Consolas, monospace);
+    --font-sans: var(--vscode-font-family, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif);
     
-    /* Transitions - Like gentle wind */
+    /* Transitions - Smooth like Ghibli animation */
     --transition-fast: 200ms cubic-bezier(0.4, 0, 0.2, 1);
     --transition-normal: 300ms cubic-bezier(0.4, 0, 0.2, 1);
     --transition-bounce: 400ms cubic-bezier(0.68, -0.55, 0.265, 1.55);
     
     /* Effects */
     --focus-ring: 0 0 0 3px var(--accent-muted);
-    --hover-brightness: brightness(1.15);
-    --active-brightness: brightness(0.85);
+    --hover-brightness: brightness(1.1);
+    --active-brightness: brightness(0.9);
+
+    /* VSCode Integration */
+    --vscode-focus-border: var(--accent);
+    --vscode-scrollbarSlider-background: hsla(var(--primary-hue), 12%, 50%, 0.2);
+    --vscode-scrollbarSlider-hoverBackground: hsla(var(--primary-hue), 12%, 50%, 0.3);
+    --vscode-scrollbarSlider-activeBackground: hsla(var(--primary-hue), 12%, 50%, 0.4);
+}
+
+/* Scrollbar Styling from Reference */
+.scrollable {
+    border-color: transparent;
+    transition: border-color 0.7s linear;
+}
+
+.scrollable:hover {
+    border-color: var(--vscode-scrollbarSlider-background);
+    transition: none;
+}
+
+.scrollable::-webkit-scrollbar-corner {
+    background-color: transparent !important;
+}
+
+.scrollable::-webkit-scrollbar-thumb {
+    background-color: var(--vscode-scrollbarSlider-background);
+    border-radius: 5px;
+    border: 2px solid transparent;
+    background-clip: content-box;
+}
+
+.scrollable::-webkit-scrollbar-thumb:hover {
+    background-color: var(--vscode-scrollbarSlider-hoverBackground);
+}
+
+.scrollable::-webkit-scrollbar-thumb:active {
+    background-color: var(--vscode-scrollbarSlider-activeBackground);
 }

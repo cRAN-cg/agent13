@@ -4,6 +4,7 @@
     flex-direction: column;
     gap: 16px;
     min-height: min-content;
+    padding: 4px;
 }
 
 /* Message Base Styles */
@@ -14,44 +15,77 @@
     font-family: var(--font-mono);
     font-size: 14px;
     line-height: 1.6;
-    padding: 14px 18px;
-    border-radius: 12px;
+    padding: 16px 20px;
+    border-radius: 16px;
     opacity: 0;
     transform: translateY(10px);
     animation: message-appear var(--transition-normal) forwards;
     box-shadow: var(--shadow-sm);
     transition: all var(--transition-bounce);
-    backdrop-filter: blur(4px);
+    backdrop-filter: blur(8px);
 }
 
-/* Query Message */
+/* Query Message - Like a whispered question */
 .agent13-query {
     color: var(--text-secondary);
-    background: var(--gradient-surface);
+    background: linear-gradient(
+        135deg,
+        hsla(var(--primary-hue), 18%, 18%, 0.95),
+        hsla(var(--primary-hue), 15%, 15%, 0.95)
+    );
     margin-left: auto;
     max-width: 85%;
-    border: 1px solid var(--border-primary);
-    opacity: 0.85;
+    border: 1px solid hsla(var(--primary-hue), 20%, 40%, 0.2);
+    opacity: 0.9;
+    transform-origin: right bottom;
 }
 
-/* Response Message */
+.agent13-query:hover {
+    border-color: hsla(var(--primary-hue), 20%, 40%, 0.3);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-1px);
+}
+
+/* Response Message - Like a gentle answer */
 .agent13-response {
     color: var(--text-primary);
-    background: var(--surface-2);
-    border: 1px solid var(--border-secondary);
+    background: linear-gradient(
+        135deg,
+        hsla(var(--primary-hue), 15%, 15%, 0.95),
+        hsla(var(--primary-hue), 12%, 12%, 0.95)
+    );
+    border: 1px solid hsla(var(--accent-hue), 60%, 50%, 0.15);
     opacity: 0.95;
+    transform-origin: left bottom;
 }
 
-/* Code Blocks in Response */
+.agent13-response:hover {
+    border-color: hsla(var(--accent-hue), 60%, 50%, 0.25);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-1px);
+}
+
+/* Code Blocks in Response - Like scrolls of knowledge */
 .agent13-response pre {
     position: relative;
-    padding-top: 2.5em;
-    background: hsl(var(--primary-hue), 15%, 12%);
-    border-radius: 10px;
+    padding-top: 2.75em;
+    background: linear-gradient(
+        180deg,
+        hsla(var(--primary-hue), 18%, 12%, 0.98),
+        hsla(var(--primary-hue), 15%, 10%, 0.98)
+    );
+    border-radius: 12px;
     overflow: hidden;
-    border: 1px solid var(--border-primary);
-    box-shadow: var(--shadow-sm);
+    border: 1px solid hsla(var(--accent-hue), 60%, 50%, 0.1);
+    box-shadow: var(--shadow-md);
     margin: 16px 0;
+    transition: all var(--transition-normal);
+}
+
+.agent13-response pre:hover {
+    border-color: hsla(var(--accent-hue), 60%, 50%, 0.2);
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-2px);
 }
 
 .agent13-response pre::before {
@@ -60,13 +94,18 @@
     top: 0;
     left: 0;
     right: 0;
-    background: hsl(var(--primary-hue), 18%, 15%);
+    background: linear-gradient(
+        90deg,
+        hsla(var(--accent-hue), 70%, 20%, 0.3),
+        hsla(var(--accent-hue), 70%, 15%, 0.3)
+    );
     padding: 8px 16px;
     font-size: 0.85em;
-    color: hsl(var(--accent-hue), 70%, 75%);
-    border-bottom: 1px solid var(--border-primary);
+    color: hsl(var(--accent-hue), 80%, 75%);
+    border-bottom: 1px solid hsla(var(--accent-hue), 60%, 50%, 0.1);
     text-transform: uppercase;
     letter-spacing: 0.5px;
+    backdrop-filter: blur(4px);
 }
 
 .agent13-response code {
@@ -75,17 +114,29 @@
     color: var(--text-primary);
     opacity: 0.95;
     line-height: 1.6;
+    padding: 0 16px;
 }
 
-/* Code Container */
+/* Code Container - Like an ancient scroll */
 .agent13-code-container {
     margin: 16px 0;
-    border-radius: 10px;
+    border-radius: 12px;
     overflow: hidden;
-    background: hsl(var(--primary-hue), 15%, 12%);
-    border: 1px solid var(--border-primary);
-    box-shadow: var(--shadow-sm);
-    padding: 2.5em 16px 16px;
+    background: linear-gradient(
+        180deg,
+        hsla(var(--primary-hue), 18%, 12%, 0.98),
+        hsla(var(--primary-hue), 15%, 10%, 0.98)
+    );
+    border: 1px solid hsla(var(--accent-hue), 60%, 50%, 0.1);
+    box-shadow: var(--shadow-md);
+    padding: 2.75em 16px 16px;
+    transition: all var(--transition-normal);
+}
+
+.agent13-code-container:hover {
+    border-color: hsla(var(--accent-hue), 60%, 50%, 0.2);
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-2px);
 }
 
 .agent13-code-block {
@@ -98,20 +149,25 @@
 }
 
 .line-number {
-    color: hsl(var(--primary-hue), 15%, 45%);
+    color: hsla(var(--accent-hue), 40%, 65%, 0.4);
     opacity: 0.7;
+    user-select: none;
 }
 
-/* Loading Message */
+/* Loading Message - Like Totoro's dust sprites */
 .agent13-loading {
     color: var(--text-secondary);
-    background: var(--gradient-surface);
-    padding: 12px 18px;
+    background: linear-gradient(
+        135deg,
+        hsla(var(--primary-hue), 18%, 18%, 0.95),
+        hsla(var(--primary-hue), 15%, 15%, 0.95)
+    );
+    padding: 14px 20px;
     display: flex;
     align-items: center;
-    gap: 10px;
-    border: 1px solid var(--border-primary);
-    opacity: 0.8;
+    gap: 12px;
+    border: 1px solid hsla(var(--accent-hue), 60%, 50%, 0.15);
+    opacity: 0.9;
 }
 
 .agent13-loading::after {
@@ -119,24 +175,66 @@
     width: 16px;
     height: 16px;
     border-radius: 50%;
-    border: 2px solid var(--accent);
+    border: 2px solid hsla(var(--accent-hue), 70%, 60%, 0.8);
     border-right-color: transparent;
-    animation: siri-spin 1.2s linear infinite;
-    opacity: 0.9;
+    animation: siri-spin 1.2s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite;
+    filter: drop-shadow(0 0 8px hsla(var(--accent-hue), 70%, 50%, 0.3));
 }
 
-/* Error Message */
+/* Error Message - Like a gentle warning */
 .agent13-error {
     color: var(--error);
-    background: var(--error-muted);
-    border: 1px solid var(--error);
-    opacity: 0.9;
+    background: linear-gradient(
+        135deg,
+        hsla(var(--error-hue), 30%, 15%, 0.95),
+        hsla(var(--error-hue), 25%, 12%, 0.95)
+    );
+    border: 1px solid hsla(var(--error-hue), 70%, 60%, 0.2);
+    opacity: 0.95;
 }
 
-/* Typing Animation */
+.agent13-error:hover {
+    border-color: hsla(var(--error-hue), 70%, 60%, 0.3);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-1px);
+}
+
+/* Typing Animation - Like falling leaves */
 .typing-animation {
     display: inline-block;
     opacity: 0;
-    animation: type-in 20ms forwards;
+    animation: type-in 20ms cubic-bezier(0.4, 0.0, 0.2, 1) forwards;
     animation-delay: calc(var(--char-index) * 20ms);
+}
+
+/* Keyframes */
+@keyframes message-appear {
+    0% {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes siri-spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes type-in {
+    0% {
+        opacity: 0;
+        transform: translateY(2px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }

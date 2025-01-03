@@ -7,7 +7,7 @@
     min-width: var(--panel-width);
     max-width: 80vw;
     height: 100vh;
-    background: var(--bg-primary);
+    background: hsla(var(--primary-hue), 15%, 12%, 0.95);
     border-right: 1px solid var(--border-primary);
     display: flex;
     flex-direction: column;
@@ -15,14 +15,14 @@
     font-family: var(--font-sans);
     will-change: transform;
     box-shadow: var(--shadow-lg);
-    backdrop-filter: blur(12px);
+    backdrop-filter: blur(16px);
     overflow: hidden;
     user-select: none;
     transform: translate3d(0, 0, 0);
     opacity: 1;
-    transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1),
-                opacity 0.3s cubic-bezier(0.4, 0.0, 0.2, 1),
-                visibility 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+    transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1),
+                opacity 0.4s cubic-bezier(0.4, 0.0, 0.2, 1),
+                visibility 0.4s cubic-bezier(0.4, 0.0, 0.2, 1);
 }
 
 /* Panel States */
@@ -31,7 +31,7 @@
     opacity: 0;
     visibility: hidden;
     pointer-events: none;
-    transition: none; /* Disable transitions initially */
+    transition: none;
 }
 
 .agent13-panel-visible {
@@ -44,7 +44,8 @@
                 visibility var(--transition-normal);
 }
 
-.agent13-panel-collapsed {
+/* Panel Icon */
+.agent13-panel-icon {
     width: var(--collapsed-icon-size);
     height: var(--collapsed-icon-size);
     min-width: var(--collapsed-icon-size);
@@ -54,8 +55,9 @@
     bottom: 20px;
     right: 20px;
     cursor: grab;
-    box-shadow: var(--shadow-md);
-    border: 2px solid hsla(var(--primary-hue), 12%, 95%, 0.2);
+    box-shadow: var(--shadow-md),
+                0 0 20px hsla(var(--accent-hue), 70%, 50%, 0.2);
+    border: 2px solid hsla(var(--accent-hue), 70%, 95%, 0.25);
     will-change: transform;
     overflow: hidden;
     user-select: none;
@@ -64,44 +66,12 @@
     z-index: 2147483647 !important;
 }
 
-.agent13-panel-collapsed:hover {
+.agent13-panel-icon:hover {
     opacity: 1;
-    transform: scale(1.05);
-    border-color: rgba(255, 255, 255, 0.4);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
-}
-
-/* Add motion blur effect during transitions */
-.agent13-panel-collapsed.transitioning {
-    filter: blur(0.5px);
-}
-
-/* Improve shadow transitions */
-.agent13-panel-collapsed {
-    transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1),
-                opacity 0.3s cubic-bezier(0.4, 0.0, 0.2, 1),
-                box-shadow 0.3s cubic-bezier(0.4, 0.0, 0.2, 1),
-                border-color 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
-}
-
-.agent13-panel-collapsed .agent13-panel-content,
-.agent13-panel-collapsed .agent13-panel-header,
-.agent13-panel-collapsed .agent13-panel-resizer,
-.agent13-panel-collapsed input {
-    display: none;
-}
-
-.agent13-panel-collapsed::after {
-    content: "13";
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    color: white;
-    font-size: calc(var(--collapsed-icon-size) * 0.5);
-    font-weight: 700;
-    font-family: var(--font-mono);
-    text-shadow: 0 2px 4px hsla(var(--primary-hue), 30%, 8%, 0.2);
+    transform: scale(1.05) translateY(-2px);
+    border-color: hsla(var(--accent-hue), 70%, 95%, 0.4);
+    box-shadow: var(--shadow-lg),
+                0 0 25px hsla(var(--accent-hue), 70%, 50%, 0.3);
 }
 
 /* Panel Content */
@@ -110,8 +80,6 @@
     overflow-y: auto;
     overflow-x: hidden;
     padding: 16px;
-    scrollbar-width: thin;
-    scrollbar-color: var(--accent) var(--surface-1);
     display: flex;
     flex-direction: column;
     gap: 16px;
@@ -119,21 +87,38 @@
     user-select: text;
 }
 
+/* Scrollbar Styling from Reference */
+.agent13-panel-content {
+    border-color: transparent;
+    transition: border-color 0.7s linear;
+}
+
+.agent13-panel-content:hover {
+    border-color: var(--vscode-scrollbarSlider-background);
+    transition: none;
+}
+
 .agent13-panel-content::-webkit-scrollbar {
     width: 8px;
 }
 
-.agent13-panel-content::-webkit-scrollbar-track {
-    background: var(--surface-1);
+.agent13-panel-content::-webkit-scrollbar-corner {
+    background-color: transparent !important;
 }
 
 .agent13-panel-content::-webkit-scrollbar-thumb {
-    background: var(--accent);
-    border-radius: 4px;
+    background-color: var(--vscode-scrollbarSlider-background);
+    border-radius: 5px;
+    border: 2px solid transparent;
+    background-clip: content-box;
 }
 
 .agent13-panel-content::-webkit-scrollbar-thumb:hover {
-    background: var(--accent-hover);
+    background-color: var(--vscode-scrollbarSlider-hoverBackground);
+}
+
+.agent13-panel-content::-webkit-scrollbar-thumb:active {
+    background-color: var(--vscode-scrollbarSlider-activeBackground);
 }
 
 /* Panel Header */
@@ -144,7 +129,12 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background: var(--gradient-surface);
+    background: linear-gradient(
+        180deg,
+        hsla(var(--primary-hue), 18%, 16%, 0.95),
+        hsla(var(--primary-hue), 15%, 13%, 0.95)
+    );
+    backdrop-filter: blur(8px);
     user-select: none;
 }
 
@@ -185,7 +175,7 @@
 }
 
 .agent13-header-btn:hover {
-    background: var(--surface-2);
+    background: hsla(var(--accent-hue), 70%, 50%, 0.1);
     color: var(--text-primary);
     transform: translateY(-2px);
     box-shadow: var(--shadow-sm);
@@ -228,6 +218,6 @@
 .agent13-panel-resizer.dragging::after {
     background: var(--accent);
     width: 4px;
-    box-shadow: var(--focus-ring);
+    box-shadow: 0 0 12px hsla(var(--accent-hue), 70%, 50%, 0.3);
     opacity: 1;
 }

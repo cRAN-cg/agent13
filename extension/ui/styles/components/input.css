@@ -1,19 +1,27 @@
-/* Input Container */
+/* Input Container - Like a magical window */
 .agent13-input-container {
     padding: 16px;
-    border-top: 1px solid var(--border-primary);
-    background: var(--gradient-surface);
-    backdrop-filter: blur(8px);
+    border-top: 1px solid hsla(var(--primary-hue), 20%, 40%, 0.15);
+    background: linear-gradient(
+        180deg,
+        hsla(var(--primary-hue), 15%, 15%, 0.95),
+        hsla(var(--primary-hue), 12%, 12%, 0.95)
+    );
+    backdrop-filter: blur(12px);
 }
 
-/* Input Field */
+/* Input Field - Like writing with starlight */
 .agent13-input {
     width: 100%;
-    min-height: 40px;
+    min-height: 44px;
     max-height: 200px;
-    background: var(--surface-2);
-    border: 1px solid var(--border-primary);
-    border-radius: 10px;
+    background: linear-gradient(
+        135deg,
+        hsla(var(--primary-hue), 18%, 14%, 0.95),
+        hsla(var(--primary-hue), 15%, 12%, 0.95)
+    );
+    border: 1px solid hsla(var(--accent-hue), 60%, 50%, 0.15);
+    border-radius: 12px;
     padding: 12px 16px;
     color: var(--text-primary);
     font-size: 14px;
@@ -24,13 +32,68 @@
     transition: all var(--transition-bounce);
     box-shadow: var(--shadow-sm);
     opacity: 0.9;
+    backdrop-filter: blur(4px);
 }
 
-/* Input Focus State */
+/* Input Hover State - Like ripples in water */
+.agent13-input:hover:not(:focus) {
+    border-color: hsla(var(--accent-hue), 60%, 50%, 0.25);
+    box-shadow: var(--shadow-md),
+                0 0 15px hsla(var(--accent-hue), 70%, 50%, 0.1);
+    transform: translateY(-1px);
+}
+
+/* Input Focus State - Like capturing moonlight */
 .agent13-input:focus {
-    border-color: var(--accent);
-    box-shadow: var(--focus-ring);
-    background: var(--surface-3);
+    border-color: hsla(var(--accent-hue), 70%, 50%, 0.3);
+    background: linear-gradient(
+        135deg,
+        hsla(var(--primary-hue), 20%, 16%, 0.98),
+        hsla(var(--primary-hue), 18%, 14%, 0.98)
+    );
+    box-shadow: var(--shadow-lg),
+                0 0 20px hsla(var(--accent-hue), 70%, 50%, 0.15);
     transform: translateY(-2px);
     opacity: 1;
+}
+
+/* Placeholder Text - Like morning mist */
+.agent13-input::placeholder {
+    color: var(--text-tertiary);
+    opacity: 0.7;
+    transition: opacity var(--transition-normal);
+}
+
+.agent13-input:focus::placeholder {
+    opacity: 0.5;
+}
+
+/* Scrollbar Styling - Like flowing water */
+.agent13-input::-webkit-scrollbar {
+    width: 8px;
+}
+
+.agent13-input::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.agent13-input::-webkit-scrollbar-thumb {
+    background-color: var(--vscode-scrollbarSlider-background);
+    border-radius: 4px;
+    border: 2px solid transparent;
+    background-clip: content-box;
+}
+
+.agent13-input::-webkit-scrollbar-thumb:hover {
+    background-color: var(--vscode-scrollbarSlider-hoverBackground);
+}
+
+.agent13-input::-webkit-scrollbar-thumb:active {
+    background-color: var(--vscode-scrollbarSlider-activeBackground);
+}
+
+/* Selection Styling - Like catching fireflies */
+.agent13-input::selection {
+    background: hsla(var(--accent-hue), 70%, 50%, 0.3);
+    color: var(--text-primary);
 }

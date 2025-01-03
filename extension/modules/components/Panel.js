@@ -189,28 +189,30 @@ export class Panel {
                 this.#minimizedPanel.destroy();
             }
             
-            // Create new minimized panel instance
-            this.#minimizedPanel = new MinimizedPanel(this.#core, this.#panelEl);
+            // Create new minimized panel instance with maximize callback
+            this.#minimizedPanel = new MinimizedPanel(
+                this.#core, 
+                this.#panelEl,
+                () => {
+                    // Update state and UI when maximized
+                    this.#header.updateCollapseButton(true);
+                    this.#state = Panel.STATES.EXPANDED;
+                    this.#panelEl.classList.add('agent13-panel-visible');
+                    this.#minimizedPanel = null;
+                }
+            );
             
             // Update state and UI
             this.#panelEl.classList.remove('agent13-panel-visible');
             this.#header.updateCollapseButton(false);
             this.#state = Panel.STATES.COLLAPSED;
             
-            // Trigger minimize with smooth transition
+            // Trigger minimize
             this.#minimizedPanel.minimize();
             
-        } else {
-            if (this.#minimizedPanel) {
-                // Trigger maximize with smooth transition
-                this.#minimizedPanel.maximize();
-                this.#minimizedPanel.destroy();
-                this.#minimizedPanel = null;
-            }
-            
-            // Update state and UI
-            this.#header.updateCollapseButton(true);
-            this.#state = Panel.STATES.EXPANDED;
+        } else if (this.#minimizedPanel) {
+            // Trigger maximize
+            this.#minimizedPanel.maximize();
         }
     }
 

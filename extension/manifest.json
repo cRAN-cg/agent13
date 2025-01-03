@@ -57,6 +57,7 @@
         {
             "resources": [
                 "modules/*.js",
+                "modules/components/*.js",
                 "libs/*.js",
                 "libs/marked.min.js",
                 "ui/styles/*.css",

@@ -1,35 +1,151 @@
-/* Trigger Appear Animation */
+/* Trigger Appear Animation - Like a spirit materializing */
 @keyframes trigger-appear {
     0% {
         opacity: 0;
-        transform: scale(0.5) translateY(10px);
+        transform: scale(0.8) translateY(15px) rotate(-5deg);
+        filter: blur(4px);
     }
-    70% {
-        transform: scale(1.1) translateY(-2px);
+    60% {
+        transform: scale(1.15) translateY(-4px) rotate(2deg);
+        filter: blur(0);
+    }
+    80% {
+        transform: scale(0.95) translateY(2px) rotate(0deg);
     }
     100% {
         opacity: 1;
-        transform: scale(1) translateY(0);
+        transform: scale(1) translateY(0) rotate(0deg);
     }
 }
 
-/* Loading Spinner Animation */
+/* Loading Spinner Animation - Like Totoro's dust sprites dancing */
 @keyframes siri-spin {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
+    0% {
+        transform: rotate(0deg) scale(1);
+        filter: blur(0px);
+    }
+    50% {
+        transform: rotate(180deg) scale(1.1);
+        filter: blur(0.5px);
+    }
+    100% {
+        transform: rotate(360deg) scale(1);
+        filter: blur(0px);
+    }
 }
 
-/* Message Appear Animation */
+/* Message Appear Animation - Like leaves floating down */
 @keyframes message-appear {
-    to {
+    0% {
+        opacity: 0;
+        transform: translateY(20px) scale(0.98) rotate(-0.5deg);
+        filter: blur(2px);
+    }
+    60% {
+        opacity: 0.8;
+        transform: translateY(-4px) scale(1.02) rotate(0.2deg);
+        filter: blur(0);
+    }
+    80% {
+        transform: translateY(2px) scale(0.99) rotate(0deg);
+    }
+    100% {
         opacity: 1;
+        transform: translateY(0) scale(1) rotate(0deg);
+    }
+}
+
+/* Typing Animation - Like raindrops appearing */
+@keyframes type-in {
+    0% {
+        opacity: 0;
+        transform: translateY(4px) scale(0.95);
+        filter: blur(1px);
+    }
+    60% {
+        opacity: 0.8;
+        transform: translateY(-1px) scale(1.02);
+        filter: blur(0);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* Hover Float Animation - Like clouds drifting */
+@keyframes hover-float {
+    0%, 100% {
         transform: translateY(0);
     }
+    50% {
+        transform: translateY(-4px);
+    }
 }
 
-/* Typing Animation */
-@keyframes type-in {
-    to {
+/* Gentle Pulse Animation - Like breathing forest */
+@keyframes gentle-pulse {
+    0%, 100% {
+        transform: scale(1);
+        filter: brightness(1);
+    }
+    50% {
+        transform: scale(1.02);
+        filter: brightness(1.1);
+    }
+}
+
+/* Fade In Animation - Like morning mist clearing */
+@keyframes fade-in {
+    0% {
+        opacity: 0;
+        filter: blur(4px);
+    }
+    100% {
         opacity: 1;
+        filter: blur(0);
+    }
+}
+
+/* Shimmer Animation - Like moonlight on water */
+@keyframes shimmer {
+    0% {
+        background-position: -200% center;
+    }
+    100% {
+        background-position: 200% center;
+    }
+}
+
+/* Pop In Animation - Like magic sparks */
+@keyframes pop-in {
+    0% {
+        opacity: 0;
+        transform: scale(0.8) rotate(-5deg);
+        filter: blur(4px);
+    }
+    70% {
+        transform: scale(1.1) rotate(2deg);
+        filter: blur(0);
+    }
+    85% {
+        transform: scale(0.95) rotate(0deg);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1) rotate(0deg);
+    }
+}
+
+/* Float Animation - Like spirits ascending */
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0) rotate(0deg);
+    }
+    25% {
+        transform: translateY(-4px) rotate(1deg);
+    }
+    75% {
+        transform: translateY(4px) rotate(-1deg);
     }
 }
