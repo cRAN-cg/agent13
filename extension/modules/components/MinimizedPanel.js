@@ -90,10 +90,11 @@ export class MinimizedPanel {
             isDragging: false,
             startX: 0,
             startY: 0,
-            lastX: 0,
-            lastY: 0,
-            velocity: { x: 0, y: 0 },
-            lastTime: 0
+            // Momentum-related state (commented out)
+            // lastX: 0,
+            // lastY: 0,
+            // velocity: { x: 0, y: 0 },
+            // lastTime: 0
         };
 
         const onDragStart = (e) => {
@@ -103,9 +104,10 @@ export class MinimizedPanel {
             this.#dragState.isDragging = true;
             this.#dragState.startX = e.clientX - this.#currentPosition.x;
             this.#dragState.startY = e.clientY - this.#currentPosition.y;
-            this.#dragState.lastX = e.clientX;
-            this.#dragState.lastY = e.clientY;
-            this.#dragState.lastTime = performance.now();
+            // Momentum tracking (commented out)
+            // this.#dragState.lastX = e.clientX;
+            // this.#dragState.lastY = e.clientY;
+            // this.#dragState.lastTime = performance.now();
             
             this.#panelEl.style.transition = 'none';
             this.#panelEl.style.cursor = 'grabbing';
@@ -118,17 +120,20 @@ export class MinimizedPanel {
             if (!this.#dragState.isDragging) return;
             e.preventDefault();
 
-            // Calculate velocity for momentum
-            const now = performance.now();
-            const dt = now - this.#dragState.lastTime;
-            if (dt > 0) {
-                this.#dragState.velocity.x = (e.clientX - this.#dragState.lastX) / dt;
-                this.#dragState.velocity.y = (e.clientY - this.#dragState.lastY) / dt;
-            }
-            
-            this.#dragState.lastX = e.clientX;
-            this.#dragState.lastY = e.clientY;
-            this.#dragState.lastTime = now;
+            // Momentum calculation (commented out)
+            // const now = performance.now();
+            // const dt = now - this.#dragState.lastTime;
+            // const dx = e.clientX - this.#dragState.lastX;
+            // const dy = e.clientY - this.#dragState.lastY;
+            // const hasMoved = Math.sqrt(dx * dx + dy * dy) > 5;
+            // 
+            // if (dt > 0 && hasMoved) {
+            //     this.#dragState.velocity.x = dx / dt;
+            //     this.#dragState.velocity.y = dy / dt;
+            //     this.#dragState.lastX = e.clientX;
+            //     this.#dragState.lastY = e.clientY;
+            //     this.#dragState.lastTime = now;
+            // }
 
             // Update position with smooth animation
             if (this.#animationFrame) cancelAnimationFrame(this.#animationFrame);
@@ -144,30 +149,42 @@ export class MinimizedPanel {
             
             this.#dragState.isDragging = false;
             
-            // Apply momentum with easing
-            let momentum = {
-                x: this.#dragState.velocity.x * 100,
-                y: this.#dragState.velocity.y * 100
-            };
-            
-            const animate = () => {
-                if (Math.abs(momentum.x) < 0.1 && Math.abs(momentum.y) < 0.1) {
-                    this.#panelEl.style.transition = 'transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1)';
-                    this.#panelEl.style.transform = this.#panelEl.style.transform.replace(' scale(1.05) rotate(0.5deg)', '');
-                    this.#panelEl.style.cursor = 'grab';
-                    return;
-                }
-                
-                const x = this.#currentPosition.x + momentum.x;
-                const y = this.#currentPosition.y + momentum.y;
-                this.#updatePosition(x, y);
-                
-                momentum.x *= 0.95;
-                momentum.y *= 0.95;
-                requestAnimationFrame(animate);
-            };
-            
-            animate();
+            // Momentum animation code (commented out)
+            // const velocityMagnitude = Math.sqrt(
+            //     this.#dragState.velocity.x * this.#dragState.velocity.x + 
+            //     this.#dragState.velocity.y * this.#dragState.velocity.y
+            // );
+            // 
+            // if (velocityMagnitude > 0.1) {
+            //     let momentum = {
+            //         x: this.#dragState.velocity.x * 100,
+            //         y: this.#dragState.velocity.y * 100
+            //     };
+            //     
+            //     const animate = () => {
+            //         if (Math.abs(momentum.x) < 0.1 && Math.abs(momentum.y) < 0.1) {
+            //             this.#panelEl.style.transition = 'transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1)';
+            //             this.#panelEl.style.transform = this.#panelEl.style.transform.replace(' scale(1.05) rotate(0.5deg)', '');
+            //             this.#panelEl.style.cursor = 'grab';
+            //             return;
+            //         }
+            //         
+            //         const x = this.#currentPosition.x + momentum.x;
+            //         const y = this.#currentPosition.y + momentum.y;
+            //         this.#updatePosition(x, y);
+            //         
+            //         momentum.x *= 0.95;
+            //         momentum.y *= 0.95;
+            //         requestAnimationFrame(animate);
+            //     };
+            //     
+            //     animate();
+            // }
+
+            // Reset visual state
+            this.#panelEl.style.transition = 'transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1)';
+            this.#panelEl.style.transform = this.#panelEl.style.transform.replace(' scale(1.05) rotate(0.5deg)', '');
+            this.#panelEl.style.cursor = 'grab';
         };
 
         // Add event listeners
